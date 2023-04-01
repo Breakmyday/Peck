@@ -1,6 +1,6 @@
 # Send-KeyPeck
 
-Send-KeyPeck is a PowerShell function that simulates human-like typing by sending keystrokes to the active window. You can use Send-KeyPeckto type text with a configurable typing speed, start delay, and choose whether to loop the text or press Enter after typing. It can be useful for automating tasks that require manual typing, demonstrating typing effects in presentations, or just having fun!
+Send-KeyPeck is a PowerShell function that simulates human-like typing by sending keystrokes to the active window. You can use Send-KeyPeck to type text with a configurable typing speed, start delay, and choose whether to loop the text or press Enter after typing. It can be useful for automating tasks that require manual typing, demonstrating typing effects in presentations, or just having fun!
 
 ## Installation
 
