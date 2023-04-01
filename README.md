@@ -19,7 +19,7 @@ To use the Peck function, you should import the script as a module in your Power
 
 4. Use the Peck function with the following command:
 
-`Send-KeyPeck-Text "your_text_here" -TypeDelay 50 -StartDelay 3 -Loop -EnterLine`
+`Send-KeyPeck -Text "your_text_here" -TypeDelay 50 -StartDelay 3 -Loop -EnterLine`
 
 Replace `"your_text_here"` with the text you want to type. You can also customize the other parameters as needed:
 
