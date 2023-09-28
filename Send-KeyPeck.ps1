@@ -7,9 +7,13 @@ function Send-KeyPeck {
         [switch]$EnterLine
     )
 
-    # Replace &nbsp; with regular spaces
-    $Text = $Text.Replace(" ", " ")
-
+    # Load the required assemblies only once
+    Add-Type -AssemblyName System.Windows.Forms
+    $user32 = Add-Type -Name User32 -Namespace Win32Functions -PassThru -MemberDefinition @"
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern short GetAsyncKeyState(int virtualKeyCode);
+"@
+    
     # Countdown before starting
     1..$StartDelay | ForEach-Object {
         Write-Host $_ -ForegroundColor Yellow
@@ -18,26 +22,21 @@ function Send-KeyPeck {
 
     $characters = $Text.ToCharArray()
 
-    # Load the System.Windows.Forms and user32.dll assemblies
-    Add-Type -AssemblyName System.Windows.Forms
-    $user32 = Add-Type -Name User32 -Namespace Win32Functions -PassThru -MemberDefinition @"
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern short GetAsyncKeyState(int virtualKeyCode);
-"@
-
     do {
         foreach ($char in $characters) {
-            # Check whether the interrupt key is pressed
+            # Check for interrupt key
             if ($user32::GetAsyncKeyState([System.Windows.Forms.Keys]::'Escape') -lt 0) {
                 Write-Verbose "Interrupt key Escape pressed. Stopping SendKeys operation." -Verbose
                 return
             }
+
             [System.Windows.Forms.SendKeys]::SendWait($char)
             Start-Sleep -Milliseconds $TypeDelay
         }
 
+        # Send Enter key if required
         if ($EnterLine) {
-            Write-Verbose "Pressing enter."
+            Write-Verbose "Pressing enter." -Verbose
             [System.Windows.Forms.SendKeys]::SendWait("{Enter}")
             Start-Sleep -Milliseconds $TypeDelay
         }
